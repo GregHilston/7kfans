@@ -104,13 +104,26 @@ To enjoy the original game music, install the music files:
 
 ### Step 6: Run the Game
 
-Once the build completes successfully, you can run the game from the build directory:
+Once the build completes successfully, you can run the game. **Important:** You must run the game from within the Nix development shell to ensure all dependencies (SDL2, OpenAL, etc.) are available.
 
 ```bash
+# Make sure you're in the Nix development shell
+nix develop
+
+# Launch the game
+SKDATA=data src/7kaa
+```
+
+**Quick launch method:**
+```bash
+cd path/to/7kaa-2.15.6
+nix develop
 SKDATA=data src/7kaa
 ```
 
 If you installed the music files, you should hear the WAR.WAV track playing at the main menu.
+
+**Note:** The game requires the Nix shell environment to run properly. If you try to run `src/7kaa` outside of `nix develop`, you may encounter library linking errors.
 
 ## Build Environment Details
 
@@ -125,14 +138,36 @@ The Nix flake provides:
 
 ## Troubleshooting
 
-### SDL2 Not Found
+### Build Issues
+
+#### SDL2 Not Found
 If you encounter SDL2 detection issues, ensure you're running inside the `nix develop` shell where all environment variables are properly set.
 
-### Compilation Errors
+#### Compilation Errors
 Make sure you've applied the LocaleRes.cpp fix mentioned in Step 2.
 
-### Permission Issues
+#### Permission Issues
 Ensure the source files are writable and you have proper permissions in the extracted directory.
+
+### Runtime Issues
+
+#### Game Won't Start
+- Make sure you're running `nix develop` first before launching the game
+- Verify you're in the correct directory (`cd path/to/7kaa-2.15.6`)
+- Check that `src/7kaa` executable exists and is executable
+
+#### Library Linking Errors
+If you see errors like "dyld: Library not loaded", you're likely running the game outside of the Nix shell:
+```bash
+# Solution: Always run from within nix develop
+nix develop
+SKDATA=data src/7kaa
+```
+
+#### No Sound/Music
+- Verify music files are in `data/MUSIC/` directory
+- Check your system audio settings and volume
+- Ensure OpenAL is working (test with other audio applications)
 
 ## What Gets Built
 
