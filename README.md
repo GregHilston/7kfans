@@ -7,11 +7,12 @@ This repository contains a Nix flake that provides an isolated development envir
 - [Nix](https://nixos.org/download.html) with flakes enabled
 - macOS (tested on macOS with Apple Silicon)
 
-## Getting the Source Code
+## Getting the Source Code and Music
 
 1. Download the official source code from **https://7kfans.com/download/**
-2. Extract the downloaded archive (e.g., `7kaa-2.15.6.tar.gz`)
-3. Copy the `flake.nix` file from this repository into the extracted source directory
+2. Download the music files from **https://7kfans.com/download/** (e.g., `7kaa-music-2.15.tar.bz2`)
+3. Extract the downloaded source archive (e.g., `7kaa-2.15.6.tar.gz`)
+4. Copy the `flake.nix` file from this repository into the extracted source directory
 
 ## Build Instructions
 
@@ -81,13 +82,35 @@ make -j4
 
 This will build the game using 4 parallel jobs. Adjust the number based on your CPU cores.
 
-### Step 5: Run the Game
+### Step 5: Install Music Files (Optional but Recommended)
+
+To enjoy the original game music, install the music files:
+
+1. Extract the music archive:
+   ```bash
+   tar -xf ~/Downloads/7kaa-music-2.15.tar.bz2 -C ~/Downloads/
+   ```
+
+2. Copy the music files to the game data directory:
+   ```bash
+   cp -r ~/Downloads/7kaa-music/MUSIC data/
+   ```
+
+3. Verify the music files are in place:
+   ```bash
+   ls data/MUSIC/
+   ```
+   You should see `.WAV` files including `WAR.WAV`, `WIN.WAV`, `LOSE.WAV`, and various civilization themes.
+
+### Step 6: Run the Game
 
 Once the build completes successfully, you can run the game from the build directory:
 
 ```bash
 SKDATA=data src/7kaa
 ```
+
+If you installed the music files, you should hear the WAR.WAV track playing at the main menu.
 
 ## Build Environment Details
 
@@ -120,6 +143,17 @@ The successful build creates:
 ## Game Data
 
 The game requires the data files from the `data/` directory to run properly. Make sure to run the game from the source directory with `SKDATA=data` environment variable set.
+
+### Music Files
+
+The game supports music files that should be placed in `data/MUSIC/` directory. The music files are:
+
+- **WAR.WAV** - Main menu and battle music
+- **WIN.WAV** - Victory music
+- **LOSE.WAV** - Defeat music
+- **Civilization themes** - CHINESE.WAV, GREEK.WAV, JAPANESE.WAV, MAYA.WAV, NORMAN.WAV, PERSIAN.WAV, VIKING.WAV
+
+Music files must be in uppercase `.WAV` format and can be downloaded from https://7kfans.com/download/.
 
 ## About Seven Kingdoms: Ancient Adversaries
 
