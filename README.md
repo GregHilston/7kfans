@@ -125,6 +125,47 @@ If you installed the music files, you should hear the WAR.WAV track playing at t
 
 **Note:** The game requires the Nix shell environment to run properly. If you try to run `src/7kaa` outside of `nix develop`, you may encounter library linking errors.
 
+## Game Configuration
+
+### Window Size and Display Settings
+
+The game can be configured by creating a `config.txt` file in the game directory and/or in `~/Library/Application Support/7kfans.com/7kaa/config.txt`. The following settings are available:
+
+#### Window Size Configuration
+```
+vga_allow_highdpi = false
+vga_keep_aspect_ratio = true
+vga_full_screen = false
+vga_window_width = 1515
+vga_window_height = 910
+```
+
+**Window Size Adjustment:**
+- `vga_window_width` - Set the window width in pixels (default game logical size is 800)
+- `vga_window_height` - Set the window height in pixels (default game logical size is 600)
+- Recommended sizes for modern displays: 1400-1600 width, 900-1000 height
+- For larger displays, try: 1515x910 (works well on 13-16" laptops)
+
+#### Display Options
+- `vga_full_screen = true/false` - Enable/disable fullscreen mode
+- `vga_keep_aspect_ratio = true/false` - Maintain 4:3 aspect ratio when scaling
+- `vga_allow_highdpi = false` - **Important:** Keep this false to avoid cursor issues on Retina displays
+
+### Retina Display Fix (macOS)
+
+**Important for Mac users with Retina displays:** This build includes fixes for cursor movement issues on high-DPI displays. If you experience problems where the mouse cursor cannot reach the edges of the game window:
+
+1. Ensure `vga_allow_highdpi = false` in your config file
+2. Use windowed mode rather than fullscreen: `vga_full_screen = false`
+3. The game has been patched to use SDL's native coordinate handling for proper Retina support
+
+### Audio Configuration
+
+The game uses OpenAL for audio on macOS. If you experience audio issues, you can try:
+- Checking system audio settings
+- Ensuring the music files are in the correct format (WAV, uppercase names)
+- Verifying the data/MUSIC directory exists and contains the music files
+
 ## Build Environment Details
 
 The Nix flake provides:
@@ -168,6 +209,18 @@ SKDATA=data src/7kaa
 - Verify music files are in `data/MUSIC/` directory
 - Check your system audio settings and volume
 - Ensure OpenAL is working (test with other audio applications)
+
+#### Cursor Cannot Reach Screen Edges (Retina Displays)
+This is a known issue that has been fixed in this build. If you still experience cursor problems:
+- Ensure `vga_allow_highdpi = false` in your config.txt
+- Use windowed mode instead of fullscreen
+- Verify the source code includes the Retina display patches (modified mouse coordinate handling)
+
+#### Config File Parse Errors
+If you see "Error in config.txt at line X":
+- Ensure boolean values use `true` or `false` (not `0` or `1`)
+- Check that each line follows the format: `setting_name = value`
+- Verify there are no extra spaces or special characters
 
 ## What Gets Built
 
